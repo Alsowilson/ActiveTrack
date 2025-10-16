@@ -1,78 +1,94 @@
 import React, { useState } from "react";
 
-export default function SignupForm() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+export default function SignupForm({ onSubmit }) {
+    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirm, setConfirm] = useState("");
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+    const validate = () => {
+        if (!username.trim() || !email.trim() || !password) {
+            setError("Please fill in all fields.");
+            return false;
+        }
+        if (password.length < 6) {
+            setError("Password must be at least 6 characters.");
+            return false;
+        }
+        if (password !== confirm) {
+            setError("Passwords do not match.");
+            return false;
+        }
+        return true;
+    };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Signup Data:", formData);
-    alert("Account created successfully!");
-    setFormData({ name: "", email: "", password: "" });
-  };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError(null);
+        if (!validate()) return;
+        setLoading(true);
+        try {
+            await onSubmit({ username: username.trim(), email: email.trim(), password });
+        } catch (err) {
+            setError(err.message || "Signup failed.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white shadow-lg rounded-2xl p-8 w-full max-w-md"
-      >
-        <h2 className="text-2xl font-bold text-center text-indigo-600 mb-6">
-          Create an Account
-        </h2>
+    return (
+    <form className="form" onSubmit={handleSubmit}>
+        {error && <div className="form-error">{error}</div>}
 
-        <input
-          type="text"
-          name="name"
-          placeholder="Full Name"
-          value={formData.name}
-          onChange={handleChange}
-          className="border border-gray-300 rounded-md w-full p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-          required
-        />
+        <label className="form-label">
+            Username
+            <input
+            className="form-input"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="choose a username"
+            />
+        </label>
 
-        <input
-          type="email"
-          name="email"
-          placeholder="Email Address"
-          value={formData.email}
-          onChange={handleChange}
-          className="border border-gray-300 rounded-md w-full p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-          required
-        />
+        <label className="form-label">
+            Email
+            <input
+            className="form-input"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@example.com"
+            />
+        </label>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          className="border border-gray-300 rounded-md w-full p-3 mb-6 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-          required
-        />
+        <label className="form-label">
+            Password
+            <input
+            className="form-input"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="at least 6 characters"
+            />
+        </label>
 
-        <button
-          type="submit"
-          className="bg-indigo-500 text-white w-full py-3 rounded-md hover:bg-indigo-600 transition-all duration-300"
-        >
-          Sign Up
+        <label className="form-label">
+            Confirm Password
+            <input
+            className="form-input"
+            type="password"
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
+            placeholder="repeat your password"
+            />
+        </label>
+
+        <button type="submit" className="btn" disabled={loading}>
+            {loading ? "Creating account..." : "Sign up"}
         </button>
-
-        <p className="text-sm text-gray-600 text-center mt-4">
-          Already have an account?{" "}
-          <a href="#" className="text-indigo-500 hover:underline">
-            Log in
-          </a>
-        </p>
-      </form>
-    </div>
+    </form>
   );
-}
+}   
