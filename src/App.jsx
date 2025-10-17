@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Auth from "./components/Auth";
 import Dashboard from "./components/Dashboard";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import ProtectedRoute from "./routes/ProtectedRoute";
 import { AuthProvider, useAuthContext } from "./context/AuthContext";
 import "./App.css";
 
@@ -18,34 +21,10 @@ function Home() {
   );
 }
 
-function Header() {
-  const { user, logout } = useAuthContext();
-
-  return (
-    <header className="site-header">
-      <Link to="/" className="brand">ActiveTrack</Link>
-      <nav>
-        {user ? (
-          <>
-            <span className="muted">Hi, {user.username}</span>
-            <button className="link-btn" onClick={logout} style={{ marginLeft: 12 }}>Logout</button>
-          </>
-        ) : (
-          <>
-            <Link to="/login" className="nav-link">Log in</Link>
-            <Link to="/signup" className="nav-link">Sign up</Link>
-          </>
-        )}
-      </nav>
-    </header>
-  );
-}
-
 function AppContent() {
-  const { login, signup, user } = useAuthContext();
+  const { login } = useAuthContext();
 
   const handleAuthSuccess = (userData) => {
-    // context handles persistence
     login(userData);
   };
 
@@ -58,13 +37,18 @@ function AppContent() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Auth onAuthSuccess={handleAuthSuccess} />} />
           <Route path="/signup" element={<Auth onAuthSuccess={handleAuthSuccess} />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </main>
 
-      <footer className="site-footer">
-        <small>© {new Date().getFullYear()} ActiveTrack</small>
-      </footer>
+      <Footer />
     </div>
   );
 }
