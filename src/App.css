@@ -1,31 +1,61 @@
+/* --- 1. BASE STYLES AND VARIABLES (Updated/Cleaned) --- */
 :root {
-  --bg: #f7fafc;
-  --card: #ffffff;
-  --muted: #6b7280;
-  --accent: #2563eb;
-  --danger: #ef4444;
-  --radius: 8px;
+  --bg: #f9fafb;     /* Light Gray Background (from update) */
+  --card: #ffffff;   /* White Card Background */
+  --muted: #6b7280;   /* Gray Muted Text */
+  --accent: #2563eb;  /* Primary Blue (retained original name for consistency) */
+  --primary: #2563eb; /* Primary Blue (from update) */
+  --secondary: #10b981; /* Secondary Green (from update) */
+  --danger: #ef4444;  /* Red Danger Color (retained) */
+  --radius: 10px;    /* Larger Radius (from update) */
 }
 
+/* Global resets and body styling */
 * { box-sizing: border-box; }
-body, html, #root { height: 100%; margin: 0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background: var(--bg); color: #111827; }
+body, html, #root { 
+  height: 100%; 
+  margin: 0; 
+  font-family: "Inter", system-ui, -apple-system, sans-serif; /* From update */
+  background: var(--bg); 
+  color: #111827; 
+  padding: 0;
+}
+
+h1, h2, h3 {
+  font-weight: 600;
+  color: #1f2937;
+}
 
 .app { min-height: 100vh; display: flex; flex-direction: column; }
+.main-content { flex: 1; padding: 28px; max-width: 900px; margin: 0 auto; }
+.muted { color: var(--muted); } 
+.page { text-align: center; padding: 40px 0; }
+
+
+/* --- 2. HEADER AND FOOTER STYLES (Merged) --- */
 .site-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 12px 20px;
-  background: white;
-  border-bottom: 1px solid #e6edf3;
+  background: var(--card); /* Using new var */
+  border-bottom: 1px solid #e5e7eb; /* Using new color */
 }
 .brand { font-weight: 700; color: var(--accent); text-decoration: none; font-size: 18px; }
 .nav-link { margin-left: 12px; text-decoration: none; color: var(--accent); }
 
-.main-content { flex: 1; padding: 28px; max-width: 900px; margin: 0 auto; }
+.site-footer { 
+  padding: 12px 20px; 
+  text-align: center; 
+  background: var(--card); 
+  border-top: 1px solid #e5e7eb; 
+  margin-top: 40px; /* From update */
+  font-size: 0.9rem; /* From update */
+  color: var(--muted); /* From update */
+}
 
-.site-footer { padding: 12px 20px; text-align: center; background: white; border-top: 1px solid #e6edf3; }
 
+/* --- 3. AUTH AND FORM STYLES (Retained Original) --- */
 .auth-wrapper { display: flex; justify-content: center; align-items: center; padding: 24px; }
 .auth-card {
   background: var(--card);
@@ -36,23 +66,34 @@ body, html, #root { height: 100%; margin: 0; font-family: Inter, system-ui, -app
   box-shadow: 0 6px 18px rgba(16,24,40,0.06);
 }
 .auth-header h2 { margin: 0; }
-.muted { color: var(--muted); font-size: 14px; }
 
 .form { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
 .form-label { display: flex; flex-direction: column; font-size: 14px; color: #111827; }
-.form-input { padding: 10px 12px; border-radius: 6px; border: 1px solid #e5e7eb; margin-top: 6px; font-size: 14px; }
+.form-input { 
+  width: 100%; /* Added from update/best practice */
+  padding: 8px; /* Used from update for consistency */
+  border: 1px solid #d1d5db; /* Used from update for consistency */
+  border-radius: var(--radius); 
+  margin-top: 4px; /* Used from update for consistency */
+  font-size: 14px; 
+}
 .form-error { background: #fff1f2; color: var(--danger); padding: 8px; border-radius: 6px; border: 1px solid #fecaca; }
 
+
+/* --- 4. BUTTON STYLES (Merged and Updated) --- */
 .btn {
-  display: inline-block;
-  padding: 10px 14px;
-  border-radius: 8px;
-  background: var(--accent);
+  display: inline-block; /* Retained original display */
+  background: var(--primary);
   color: white;
-  text-decoration: none;
   border: none;
+  border-radius: var(--radius);
+  padding: 8px 16px; /* Used from update */
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 500; /* Used from update */
+  transition: background 0.2s;
+}
+.btn:hover {
+  background: #1d4ed8;
 }
 .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
@@ -64,10 +105,8 @@ body, html, #root { height: 100%; margin: 0; font-family: Inter, system-ui, -app
 
 .link-btn { background: none; border: none; color: var(--accent); cursor: pointer; padding: 8px 0; font-size: 14px; }
 
-.page { text-align: center; padding: 40px 0; }
 
-.muted { color: var(--muted); }
-
+/* --- 5. WORKOUT AND STATS STYLES (Retained Original) --- */
 .workout-list {
   display: flex;
   flex-direction: column;
@@ -155,7 +194,7 @@ body, html, #root { height: 100%; margin: 0; font-family: Inter, system-ui, -app
 .streak-number {
   font-size: 3rem;
   font-weight: bold;
-  color: #ef4444;
+  color: var(--danger); /* Using var for consistency */
 }
 
 .streak-label {
@@ -173,3 +212,24 @@ body, html, #root { height: 100%; margin: 0; font-family: Inter, system-ui, -app
   font-weight: 600;
 }
 
+
+/* --- 6. MEDIA QUERIES (Appended from Update) --- */
+@media (max-width: 768px) {
+  .stats-summary {
+    flex-direction: column;
+  }
+
+  .calendar-grid {
+    /* 7-day grid is usually too cramped on mobile, reducing to 4 is good */
+    grid-template-columns: repeat(4, 1fr); 
+  }
+
+  .workout-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
