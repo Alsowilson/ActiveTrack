@@ -1,10 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function WorkoutForm({ onAdd }) {
   const [exercise, setExercise] = useState("");
   const [category, setCategory] = useState("strength");
   const [duration, setDuration] = useState("");
   const [error, setError] = useState(null);
+
+   useEffect(() => {
+    async function fetchCategories() {
+      const res = await fetch("https://wger.de/api/v2/exercisecategory/");
+      const data = await res.json();
+      setCategories(data.results);
+    }
+    fetchCategories();
+  }, []);
+  
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
