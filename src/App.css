@@ -118,4 +118,26 @@ body, html, #root { height: 100%; margin: 0; font-family: Inter, system-ui, -app
   margin-top: 4px;
 }
 
+.stats-summary {
+  display: flex;
+  gap: 16px;
+  margin: 16px 0;
+}
+
+.stat-card {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius);
+  padding: 12px;
+  text-align: center;
+}
+
+.chart-section {
+  margin-top: 24px;
+}
+
+.chart-section h3 {
+  margin-bottom: 8px;
+}
 
