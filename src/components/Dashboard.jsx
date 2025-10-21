@@ -4,6 +4,10 @@ import WorkoutList from "../components/WorkoutList";
 import { useAuthContext } from "../context/AuthContext";
 import DailyWorkoutView from "../components/DailyWorkoutView";
 import WeeklyCalendar from "../components/WeeklyCalendar";
+import Stats from "../components/Stats";
+import StreakCounter from "../components/StreakCounter";
+
+
 
 export default function Dashboard() {
   const { user } = useAuthContext();
@@ -36,6 +40,8 @@ export default function Dashboard() {
       <WorkoutList workouts={workouts} onDelete={deleteWorkout} />
       <DailyWorkoutView workouts={workouts} />
       <WeeklyCalendar workouts={workouts} />
+      <StreakCounter workouts={workouts} />
+      <Stats workouts={workouts} />
 
     </div>
   );
