@@ -67,3 +67,21 @@ body, html, #root { height: 100%; margin: 0; font-family: Inter, system-ui, -app
 .page { text-align: center; padding: 40px 0; }
 
 .muted { color: var(--muted); }
+
+.workout-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.workout-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--card);
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius);
+  padding: 10px 12px;
+}
+
+

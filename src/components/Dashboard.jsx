@@ -1,15 +1,37 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import WorkoutForm from "../components/WorkoutForm";
+import WorkoutList from "../components/WorkoutList";
+import { useAuthContext } from "../context/AuthContext";
 
 export default function Dashboard() {
-  return (
-    <div style={{ padding: 24 }}>
-      <h1>ActiveTrack Dashboard (placeholder)</h1>
-      <p>This is a placeholder dashboard. We'll replace this with the main app views (workouts, calendar) soon.</p>
+  const { user } = useAuthContext();
+  const [workouts, setWorkouts] = useState([]);
 
-      <p>
-        Quick links: <Link to="/login">Login</Link> · <Link to="/signup">Sign up</Link>
-      </p>
+ 
+  useEffect(() => {
+    const saved = localStorage.getItem("activeTrackWorkouts");
+    if (saved) setWorkouts(JSON.parse(saved));
+  }, []);
+
+  
+  useEffect(() => {
+    localStorage.setItem("activeTrackWorkouts", JSON.stringify(workouts));
+  }, [workouts]);
+
+  const addWorkout = (workout) => {
+    setWorkouts([workout, ...workouts]);
+  };
+
+  const deleteWorkout = (id) => {
+    setWorkouts(workouts.filter((w) => w.id !== id));
+  };
+
+  return (
+    <div>
+      <h1>{user ? `${user.username}'s Dashboard` : "Dashboard"}</h1>
+      <WorkoutForm onAdd={addWorkout} />
+      <hr style={{ margin: "20px 0" }} />
+      <WorkoutList workouts={workouts} onDelete={deleteWorkout} />
     </div>
   );
 }
