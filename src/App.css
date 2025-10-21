@@ -84,4 +84,38 @@ body, html, #root { height: 100%; margin: 0; font-family: Inter, system-ui, -app
   padding: 10px 12px;
 }
 
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.calendar-day {
+  background: var(--card);
+  border: 1px solid #e5e7eb;
+  border-radius: var(--radius);
+  padding: 10px;
+  text-align: center;
+  transition: 0.2s;
+}
+
+.calendar-day.today {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.calendar-day.active {
+  background: #d1fae5;
+}
+
+.day-name {
+  font-weight: bold;
+}
+
+.day-count {
+  font-size: 1.2rem;
+  margin-top: 4px;
+}
+
 

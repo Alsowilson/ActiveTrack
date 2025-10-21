@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import WorkoutForm from "../components/WorkoutForm";
 import WorkoutList from "../components/WorkoutList";
 import { useAuthContext } from "../context/AuthContext";
+import DailyWorkoutView from "../components/DailyWorkoutView";
+import WeeklyCalendar from "../components/WeeklyCalendar";
 
 export default function Dashboard() {
   const { user } = useAuthContext();
@@ -32,6 +34,9 @@ export default function Dashboard() {
       <WorkoutForm onAdd={addWorkout} />
       <hr style={{ margin: "20px 0" }} />
       <WorkoutList workouts={workouts} onDelete={deleteWorkout} />
+      <DailyWorkoutView workouts={workouts} />
+      <WeeklyCalendar workouts={workouts} />
+
     </div>
   );
 }
