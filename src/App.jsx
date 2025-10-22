@@ -6,6 +6,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import { AuthProvider, useAuthContext } from "./context/AuthContext";
+import Profile from "./components/Profile"; 
 import "./App.css";
 
 function Home() {
@@ -42,6 +43,15 @@ function AppContent() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          
+          <Route
+            path="/profile" 
+            element={
+              <ProtectedRoute>
+                <Profile /> 
               </ProtectedRoute>
             }
           />
