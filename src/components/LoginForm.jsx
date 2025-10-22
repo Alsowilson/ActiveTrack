@@ -38,7 +38,7 @@ export default function LoginForm() {
 
   return (
     <form className="form" onSubmit={handleSubmit}>
-      <h2 className="form-title">Welcome Back!</h2>
+     
 
       {error && <div className="form-error">{error}</div>}
 
