@@ -2,20 +2,29 @@ import React, { useEffect, useState } from "react";
 
 export default function WorkoutForm({ onAdd }) {
   const [exercise, setExercise] = useState("");
-  const [category, setCategory] = useState("strength");
+  // ✅ FIX 1a: Correctly define categories as state, initialized to an array of default values.
+  const [categories, setCategories] = useState([
+    { id: 'strength', name: 'Strength' },
+    { id: 'cardio', name: 'Cardio' },
+    { id: 'flexibility', name: 'Flexibility' },
+    { id: 'other', name: 'Other' },
+  ]);
+  // ✅ FIX 1b: Use a separate state for the currently selected category value.
+  const [selectedCategory, setSelectedCategory] = useState("strength"); 
   const [duration, setDuration] = useState("");
   const [error, setError] = useState(null);
 
-   useEffect(() => {
+  useEffect(() => {
     async function fetchCategories() {
       const res = await fetch("https://wger.de/api/v2/exercisecategory/");
       const data = await res.json();
-      setCategories(data.results);
+      // Only set categories if the fetch is successful.
+      // We are overriding the default list here.
+      setCategories(data.results.map(c => ({ id: c.id, name: c.name })));
     }
     fetchCategories();
   }, []);
   
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -23,16 +32,22 @@ export default function WorkoutForm({ onAdd }) {
       setError("Please enter exercise and duration.");
       return;
     }
+    
+    // Get the date in the YYYY-MM-DD format for filtering in Dashboard.jsx
+    const today = new Date().toISOString().split("T")[0]; // FIX 2
+
     const newWorkout = {
       id: Date.now(),
       exercise: exercise.trim(),
-      category,
+      category: selectedCategory, // Use the state holding the selected value
       duration,
-      date: new Date().toISOString(),
+      date: today, // ✅ FIX 2: Use the YYYY-MM-DD format for filtering
     };
+    
     onAdd(newWorkout);
+    
     setExercise("");
-    setCategory("strength");
+    setSelectedCategory("strength"); // Use the correct setter
     setDuration("");
     setError(null);
   };
@@ -57,13 +72,16 @@ export default function WorkoutForm({ onAdd }) {
         Category
         <select
           className="form-input"
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
+          value={selectedCategory} // Use the state holding the selected value
+          onChange={(e) => setSelectedCategory(e.target.value)} // Use the correct setter
         >
-          <option value="strength">Strength</option>
-          <option value="cardio">Cardio</option>
-          <option value="flexibility">Flexibility</option>
-          <option value="other">Other</option>
+          {/* Dynamically render categories from state */}
+          {categories.map((c) => (
+            // Ensure the value matches the id used for selection
+            <option key={c.id} value={c.name}>
+              {c.name}
+            </option>
+          ))}
         </select>
       </label>
 
@@ -84,4 +102,3 @@ export default function WorkoutForm({ onAdd }) {
     </form>
   );
 }
-
