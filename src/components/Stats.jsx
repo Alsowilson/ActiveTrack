@@ -12,7 +12,7 @@ import {
 } from "recharts";
 
 export default function Stats({ workouts }) {
-  // Compute stats
+ 
   const totalWorkouts = workouts.length;
 
   const totalDuration = workouts.reduce((sum, w) => {
