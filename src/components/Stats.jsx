@@ -38,7 +38,7 @@ export default function Stats({ workouts }) {
 
   return (
     <div style={{ marginTop: 40 }}>
-      <h2>Your Stats</h2>
+     
 
       <div className="stats-summary">
         <div className="stat-card">
