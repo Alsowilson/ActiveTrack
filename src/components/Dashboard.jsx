@@ -34,7 +34,9 @@ export default function Dashboard() {
 
   const today = new Date().toISOString().split("T")[0];
   
-  const todaysWorkouts = workouts.filter((w) => w.date === today);
+  const todaysWorkouts = workouts.filter(
+  (w) => w.date && w.date.startsWith(today)
+);
 
   return (
     <div className="min-h-screen bg-gray-50">
